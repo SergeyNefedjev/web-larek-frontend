@@ -4,22 +4,21 @@ export interface IProduct{
   image: string;
   title: string;
   category: string;
-  price: number;
+  price: number | null;
 }
 
 export interface IProductsInfo {
   items: IProduct[];
   preview: string | null; 
-  getProduct(): IProduct; 
+  getProduct(productId: string): IProduct;  
   getProducts(): IProduct[];
 }
 
-
 export interface IBasketInfo {
   items: IProduct[];
-  addProduct(): void; 
-  deleteProduct(): void; 
-  getProduct(): IProduct;
+  addProduct(product: IProduct): void;  
+  deleteProduct(productId: string, payload: Function | null): void; 
+  getProduct(productId: string): IProduct;
   getTotalPrice(): number;
   clear(): void;
 }
@@ -42,12 +41,12 @@ export interface IAppState {
   order: IOrder | null;
 }
 
-export type PostApiMethods = 'POST' | 'PUT' | 'DELETE' ;
+export type ApiPostMethods = 'POST' | 'PUT' | 'DELETE' ;
 
 export interface IApi {
   baseUrl: string;
   get<T>(url: string): Promise<T>;
-  post<T>(url: string, data: object, method?: PostApiMethods): Promise<T>;
+  post<T>(url: string, data: object, method?: ApiPostMethods): Promise<T>;
 }
 
 export interface IOrderResult {
@@ -55,3 +54,4 @@ export interface IOrderResult {
   total: number;
 }
 
+export type FormErrors = Partial<Record<keyof IOrder, string>>;
